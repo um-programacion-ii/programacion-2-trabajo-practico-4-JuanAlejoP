@@ -1,46 +1,36 @@
----
-name: Issue Template
-about: Template para crear nuevos issues
-title: ''
-labels: ''
-assignees: ''
+name: Plantilla de issue
+description: Usar para describir tareas o funcionalidades a implementar
+title: "Implementación de la clase Libro"
+labels: ["enhancement"]
+assignees:
+  - JuanAlejoP
 
----
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Describe brevemente la funcionalidad a implementar.
+      placeholder: Crear la clase `Libro` con sus atributos básicos y la lógica mínima de negocio para modelar un libro en el sistema.
+    validations:
+      required: true
 
-## Descripción
-[Describe brevemente el propósito de este issue]
-
-## Requisitos Técnicos
-- [ ] Requisito 1
-- [ ] Requisito 2
-- [ ] Requisito 3
-
-## Criterios de Aceptación
-- [ ] Criterio 1
-- [ ] Criterio 2
-- [ ] Criterio 3
-
-## Dependencias
-- [ ] Dependencia 1
-- [ ] Dependencia 2
-
-## Complejidad
-- [ ] Baja
-- [ ] Media
-- [ ] Alta
-
-## Labels
-- [ ] `enhancement`
-- [ ] `bug`
-- [ ] `documentation`
-- [ ] `testing`
-- [ ] `model`
-- [ ] `repository`
-- [ ] `service`
-- [ ] `controller`
-- [ ] `database`
-
-## Asignación
-- Milestone: [Nombre del Milestone]
-- Project: Sistema de Gestión de Biblioteca
-- Estado: To Do 
+  - type: textarea
+    id: tareas
+    attributes:
+      label: Tareas
+      description: Lista las tareas a completar para terminar la implementación.
+      placeholder: |
+        - [ ] Crear clase `Libro`
+        - [ ] Añadir atributos privates:
+          - `String isbn`
+          - `String titulo`
+          - `String autor`
+          - `Estado estado` (enum con valores `DISPONIBLE`, `PRESTADO`)
+        - [ ] Generar constructor público que reciba `isbn`, `titulo` y `autor` e inicialice `estado` a `DISPONIBLE`
+        - [ ] Implementar getters para todos los atributos
+        - [ ] Manejar excepciones adecuadamente
+        - [ ] Compilar código sin errores
+        - [ ] Agregar o actualizar documentación
+    validations:
+      required: true
