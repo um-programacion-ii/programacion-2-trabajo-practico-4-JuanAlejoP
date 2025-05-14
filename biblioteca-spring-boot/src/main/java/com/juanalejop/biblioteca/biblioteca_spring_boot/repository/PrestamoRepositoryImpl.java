@@ -1,12 +1,14 @@
 package com.juanalejop.biblioteca.biblioteca_spring_boot.repository;
 
 import com.juanalejop.biblioteca.biblioteca_spring_boot.model.Prestamo;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class PrestamoRepositoryImpl implements PrestamoRepository{
     private final List<Prestamo> prestamos = new ArrayList<>();
     private final AtomicLong nextId = new AtomicLong(1);
@@ -37,5 +39,11 @@ public class PrestamoRepositoryImpl implements PrestamoRepository{
     @Override
     public void deleteById(Long id) {
         prestamos.removeIf(p -> p.getId().equals(id));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return prestamos.stream()
+                .anyMatch(p -> p.getId().equals(id));
     }
 }

@@ -10,4 +10,5 @@ public interface UsuarioRepository {
     Optional<Usuario> findById(Long id);
     Usuario save(Usuario usuario);
     void deleteById(Long id);
+    boolean existsById(Long id);
 }

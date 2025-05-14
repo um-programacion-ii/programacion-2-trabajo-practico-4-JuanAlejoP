@@ -10,4 +10,5 @@ public interface PrestamoRepository {
     Optional<Prestamo> findById(Long id);
     Prestamo save(Prestamo prestamo);
     void deleteById(Long id);
+    boolean existsById(Long id);
 }

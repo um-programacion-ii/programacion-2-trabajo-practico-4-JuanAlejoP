@@ -46,4 +46,10 @@ public class LibroRepositoryImpl implements LibroRepository {
     public void deleteById(Long id) {
         libros.removeIf(l -> l.getId().equals(id));
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return libros.stream()
+                .anyMatch(l -> l.getId().equals(id));
+    }
 }

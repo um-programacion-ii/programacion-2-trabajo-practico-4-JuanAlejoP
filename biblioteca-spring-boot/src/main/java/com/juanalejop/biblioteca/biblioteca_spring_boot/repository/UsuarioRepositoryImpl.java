@@ -40,4 +40,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     public void deleteById(Long id) {
         usuarios.removeIf(u -> u.getId().equals(id));
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return usuarios.stream()
+                .anyMatch(u -> u.getId().equals(id));
+    }
 }

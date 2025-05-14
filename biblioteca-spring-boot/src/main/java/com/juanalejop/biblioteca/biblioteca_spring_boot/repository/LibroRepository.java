@@ -11,4 +11,5 @@ public interface LibroRepository {
     Optional<Libro> findByIsbn(String isbn);
     Libro save(Libro libro);
     void deleteById(Long id);
+    boolean existsById(Long id);
 }
