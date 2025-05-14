@@ -5,6 +5,6 @@ public class LibroNoEncontradoException extends RuntimeException {
       super("Libro no encontrado con ISBN: " + isbn);
     }
     public LibroNoEncontradoException(Long id) {
-      super(("Libro no encontrado con ID: " + id));
+      super("Libro no encontrado con ID: " + id);
     }
 }
