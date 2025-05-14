@@ -9,5 +9,5 @@ public interface LibroRepository {
     Optional<Libro> findById(Long id);
     Optional<Libro> findByIsbn(String isbn);
     Libro save(Libro libro);
-    void deleteById(Long Id);
+    void deleteById(Long id);
 }
