@@ -23,7 +23,7 @@ class LibroRepositoryImplTest {
         repo.save(libro);
         Optional<Libro> encontrado = repo.findById(libro.getId());
         assertTrue(encontrado.isPresent());
-        assertEquals("he Fragrant Flower Blooms with Dignity 1", encontrado.get().getTitulo());
+        assertEquals("The Fragrant Flower Blooms with Dignity 1", encontrado.get().getTitulo());
     }
 
     @Test
