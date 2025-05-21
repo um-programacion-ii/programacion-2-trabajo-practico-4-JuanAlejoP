@@ -119,8 +119,8 @@ Desarrollar un sistema de gestión de biblioteca utilizando Spring Framework, im
 > 💡 **Nota**: Esta estimación considera la experiencia adquirida en trabajos anteriores y la complejidad de implementar una arquitectura en capas con Spring Framework. El tiempo se ha ajustado considerando que no se requiere implementación de persistencia real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
-- **Legajo**: [Número de Legajo]
+- **Nombre y Apellido**: Juan Alejo Patiño
+- **Legajo**: 61160
 
 ## 📋 Requisitos Previos
 
@@ -531,7 +531,156 @@ El uso de Inteligencia Artificial (IA) en este trabajo práctico debe seguir las
    - La IA puede usarse para facilitar el aprendizaje
    - Documentar el proceso de desarrollo
    - Mantener un registro del progreso
+---
+## 🚀 Instalación y arranque
 
+1. **Clonar el repositorio**
+   ```bash
+   git clone git@github.com:um-programacion-ii/programacion-2-trabajo-practico-4-JuanAlejoP.git
+   cd biblioteca-spring-boot
+   ```
+2. **Compilar y ejecutar con Maven Wrapper**
+   ```bash
+   # Descargar dependencias y compilar
+   ./mvnw clean package
+   
+   # O arrancar directamente sin empaquetar
+   ./mvnw spring-boot:run
+   ```
+3. **Acceder a la API**
+
+   Por defecto la aplicación arranca en http://localhost:8080.
+   Todos los endpoints REST quedan bajo `/api`.
+
+### 💻 Ejemplos de solicitudes HTTP (cURL)
+### Libros
+#### · Listar todos
+```bash
+curl -X GET http://localhost:8080/api/libros
+```
+#### · Crear un Libro
+```bash
+curl -X POST http://localhost:8080/api/libros \
+     -H "Content-Type: application/json" \
+     -d '{
+       "isbn":"979-8888771389",
+       "titulo":"The Fragrant Flower Blooms with Dignity 1",
+       "autor":"Saka Mikami",
+       "estado":"DISPONIBLE"
+     }'
+```
+#### · Obtener por ID
+```bash
+curl -X GET http://localhost:8080/api/libros/1
+```
+#### · Actualizar
+```bash
+curl -X PUT http://localhost:8080/api/libros/1 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "isbn":"979-8888771389",
+       "titulo":"The Fragrant Flower Blooms with Dignity 1 (Actualizado)",
+       "autor":"Saka Mikami",
+       "estado":"PRESTADO"
+     }'
+```
+#### · Eliminar
+```bash
+curl -X DELETE http://localhost:8080/api/libros/1
+```
+
+### Usuarios
+#### · Crear un usuario
+```bash
+curl -X POST http://localhost:8080/api/usuarios \
+     -H "Content-Type: application/json" \
+     -d '{
+       "nombre":"Juan",
+       "email":"juan@ejemplo.com",
+       "activo":true
+     }'
+```
+#### · Listar todos
+```bash
+curl -X GET http://localhost:8080/api/usuarios
+```
+
+### Préstamos
+#### · Crear un préstamo
+```bash
+curl -X POST http://localhost:8080/api/prestamos \
+     -H "Content-Type: application/json" \
+     -d '{
+       "libro":{"id":1},
+       "usuario":{"id":1},
+       "fechaPrestamo":"2025-05-20",
+       "fechaDevolucion":"2025-05-27"
+     }'
+```
+#### · Listar todos
+```bash
+curl -X GET http://localhost:8080/api/prestamos
+```
+> También pueden importarse estas peticiones en Postman usando la sección **Import → Raw Text** y pegando los comandos cURL de arriba.
+
+## 🏛 Arquitectura y decisiones de diseño
+### · Capas
+#### · Modelo (domain)
+   Clases `Libro`, `Usuario`, `Prestamo` y `EstadoLibro`.
+
+#### · Repositorio (data access)
+   Implementaciones en memoria basadas en `List<T>` para CRUD rápido sin base de datos externa.
+
+#### · Servicio (business logic)
+   Interfaces `*Service` e implementaciones `*ServiceImpl` que validan existencia y aplican reglas de negocio.
+
+#### · Controlador (API REST)
+   Endpoints bajo `/api` que exponen JSON y gestionan errores con excepciones personalizadas.
+
+### · Persistencia en memoria
+   Usamos un `ArrayList` (y un contador atómico) para asignar IDs y almacenar objetos.
+#### · Ventajas:
+- Configuración cero, ideal para demostraciones y pruebas.
+
+- Ligero y fácil de resetear entre ejecuciones.
+#### · Inconvenientes:
+- Los datos no sobreviven reinicios.
+
+- No apto para producción, pero suficiente para este TP.
+
+#### · Principios SOLID
+**Single Responsibility:** cada clase (modelo, repositorio, servicio, controlador) tiene una única responsabilidad.
+
+**Open/Closed:** repositorios y servicios basados en interfaces, fáciles de extender (p.ej. reemplazar impl en memoria por JPA).
+
+**Liskov Substitution:** las implementaciones respetan las firmas de las interfaces.
+
+**Interface Segregation:** servicios y repositorios definen solo los métodos necesarios.
+
+**Dependency Inversion:** los controladores y servicios dependen de interfaces, no de clases concretas.
+
+## 📝 Consideraciones Éticas sobre el Uso de IA
+
+Durante el desarrollo de este proyecto he utilizado ChatGPT de OpenAI como herramienta de asistencia, y se han seguido estas pautas:
+
+- **IA como apoyo, no sustituto**  
+  La IA se ha empleado únicamente para entender buenas prácticas, generar ejemplos de tests, uso de plantillas de issues/PR y escritura de secciones de documentación.
+
+- **Revisión y comprensión**  
+  Cada sección de código o sugerencia provista por la IA fue revisada, comprendida y adaptada manualmente antes de incorporarla al repositorio.
+
+- **Transparencia y responsabilidad**
+   - Soy plenamente responsable de la calidad, corrección y estilo del código final.
+   - El trabajo entregado refleja mi aprendizaje personal: no se ha presentado nada sin comprensión.
+
+- **Verificación exhaustiva**  
+  Se ha validado que todo el código cumple los requisitos funcionales y de estilo (SOLID, POO, convenciones de Spring Boot) y cuenta con la cobertura de tests necesaria.
+
+- **Aprendizaje activo**  
+  La IA ha servido como punto de partida para profundizar en conceptos (p.ej. composición de ISBN, diferencias entre estructuras de datos y anotaciones de testing), pero siempre integrando el razonamiento propio.
+
+> **Nota:** Con esta declaración aseguro un uso ético y controlado de la IA, alineado con los principios de honestidad académica, aprendizaje autónomo y responsabilidad profesional.
+---
 ## 📝 Licencia
 
 Este trabajo es parte del curso de Programación II de Ingeniería en Informática. Uso educativo únicamente.
