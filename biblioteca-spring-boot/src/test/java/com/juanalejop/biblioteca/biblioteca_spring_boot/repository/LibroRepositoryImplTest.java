@@ -34,4 +34,18 @@ class LibroRepositoryImplTest {
         repo.deleteById(l1.getId());
         assertEquals(1, repo.findAll().size());
     }
+
+    @Test
+    void findByIsbn_encuentraYNoEncuentra() {
+        Libro libro = repo.save(new Libro(null, "ABC", "T", "A", EstadoLibro.DISPONIBLE));
+        assertTrue(repo.findByIsbn("ABC").isPresent());
+        assertFalse(repo.findByIsbn("ZZZ").isPresent());
+    }
+
+    @Test
+    void existsById_funcionaCorrecto() {
+        Libro libro = repo.save(new Libro(null, "XYZ", "T2", "B", EstadoLibro.DISPONIBLE));
+        assertTrue(repo.existsById(libro.getId()));
+        assertFalse(repo.existsById(999L));
+    }
 }

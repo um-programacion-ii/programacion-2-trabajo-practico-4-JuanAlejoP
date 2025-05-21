@@ -50,4 +50,21 @@ class PrestamoRepositoryImplTest {
         repo.deleteById(prestamo1.getId());
         assertEquals(1, repo.findAll().size(), "Debería quedar un solo préstamo después de eliminar");
     }
+
+    @Test
+    void findById_encuentraYNoEncuentra() {
+        Prestamo prestamo = repo.save(new Prestamo(null, libro1, usuario, LocalDate.now(), null));
+
+        Optional<Prestamo> encontrado = repo.findById(prestamo.getId());
+        assertTrue(encontrado.isPresent());
+        assertEquals(prestamo.getId(), encontrado.get().getId());
+        assertFalse(repo.findById(777L).isPresent());
+    }
+
+    @Test
+    void existsById_funcionaCorrecto() {
+        Prestamo prestamo = repo.save(new Prestamo(null, libro2, usuario, LocalDate.now(), null));
+        assertTrue(repo.existsById(prestamo.getId()));
+        assertFalse(repo.existsById(555L));
+    }
 }

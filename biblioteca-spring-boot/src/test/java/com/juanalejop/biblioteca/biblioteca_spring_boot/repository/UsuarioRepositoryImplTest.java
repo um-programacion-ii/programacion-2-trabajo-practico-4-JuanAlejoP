@@ -35,4 +35,21 @@ class UsuarioRepositoryImplTest {
         repo.deleteById(usuario1.getId());
         assertEquals(1, repo.findAll().size(), "Debería quedar un solo usuario después de eliminar");
     }
+
+    @Test
+    void findById_encuentraYNoEncuentra() {
+        Usuario usuario = repo.save(new Usuario(null, "Marcelo", "marcelo@ejmeplo.com", true));
+
+        Optional<Usuario> encontrado = repo.findById(usuario.getId());
+        assertTrue(encontrado.isPresent());
+        assertEquals("Marcelo", encontrado.get().getNombre());
+        assertFalse(repo.findById(999L).isPresent());
+    }
+
+    @Test
+    void existsById_funcionaCorrecto() {
+        Usuario usuario = repo.save(new Usuario(null, "Jose", "jose@ejemplo.com", false));
+        assertTrue(repo.existsById(usuario.getId()));
+        assertFalse(repo.existsById(12345L));
+    }
 }
