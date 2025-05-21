@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PrestamoServiceImplTest {
+    private static final Logger log = LoggerFactory.getLogger(PrestamoServiceImplTest.class);
     @Mock
     private PrestamoRepository prestamoRepository;
 
@@ -49,5 +52,28 @@ class PrestamoServiceImplTest {
 
         assertThrows(PrestamoNoEncontradoException.class,
                 () -> prestamoService.buscarPorId(id));
+    }
+
+    @Test
+    void guardar_delegaCorrectamente() {
+        Prestamo input = new Prestamo(null, null, null, LocalDate.now(), null);
+        when(prestamoRepository.save(input)).thenReturn(input);
+
+        Prestamo resultado = prestamoService.guardar(input);
+        assertNotNull(resultado);
+        verify(prestamoRepository).save(input);
+    }
+
+    @Test
+    void actualizar_conIdInexistente_lanzaExcepcion() {
+        when(prestamoRepository.existsById(9L)).thenReturn(false);
+        assertThrows(PrestamoNoEncontradoException.class,
+        () -> prestamoService.actualizar(9L, new Prestamo()));
+    }
+
+    @Test
+    void eliminar_delegaYNoLanza() {
+        doNothing().when(prestamoRepository).deleteById(4L);
+        assertDoesNotThrow(() -> prestamoService.eliminar(4L));
     }
 }

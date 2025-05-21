@@ -43,4 +43,35 @@ class UsuarioServiceImplTest {
         assertThrows(UsuarioNoEncontradoException.class,
                 () -> usuarioService.buscarPorId(id));
     }
+
+    @Test
+    void guardar_delegaEnRepository() {
+        Usuario input = new Usuario(null, "Juan", "juan@ejemplo.com", true);
+        Usuario guardado = new Usuario(10L, "Juan", "juan@ejemplo.com", true);
+        when(usuarioRepository.save(input)).thenReturn(guardado);
+
+        Usuario resultado = usuarioService.guardar(input);
+        assertEquals(10L, resultado.getId());
+        verify(usuarioRepository).save(input);
+    }
+
+    @Test
+    void actualizar_conIdExistente_devuelveActualizado() {
+        Long id = 7L;
+        Usuario actualizado = new Usuario(null, "Marcelo", "marcelo@ejemplo.com", false);
+        when(usuarioRepository.existsById(id)).thenReturn(true);
+        when(usuarioRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Usuario resultado = usuarioService.actualizar(id, actualizado);
+        assertEquals(id, resultado.getId());
+        assertFalse(resultado.getActivo());
+        verify(usuarioRepository).existsById(id);
+        verify(usuarioRepository).save(actualizado);
+    }
+
+    @Test
+    void eliminar_noLanza() {
+        doNothing().when(usuarioRepository).deleteById(2L);
+        assertDoesNotThrow(() -> usuarioService.eliminar(2L));
+    }
 }
