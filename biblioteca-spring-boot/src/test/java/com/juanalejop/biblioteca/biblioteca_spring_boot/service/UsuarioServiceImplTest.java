@@ -14,6 +14,12 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias para la implementación de servicio de usuarios (UsuarioServiceImpl).
+ * <p>
+ * Valida la lógica para búsqueda, creación, actualización y eliminación de usuarios,
+ * manejando escenarios de éxito y error.
+ */
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceImplTest {
     @Mock
@@ -22,6 +28,10 @@ class UsuarioServiceImplTest {
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
 
+
+    /**
+     * Cuando se busca un usuario existente por ID, retorna el objeto usuario.
+     */
     @Test
     void cuandoBuscarPorIdExiste_entoncesRetornaUsuario() {
         Long id = 1L;
@@ -35,6 +45,10 @@ class UsuarioServiceImplTest {
         verify(usuarioRepository).findById(id);
     }
 
+
+    /**
+     * Cuando se busca un usuario inexistente, lanza UsuarioNoEncontradoException.
+     */
     @Test
     void cuandoBuscarPorIdNoExiste_entoncesLanzaExcepcion() {
         Long id = 1L;
@@ -44,6 +58,10 @@ class UsuarioServiceImplTest {
                 () -> usuarioService.buscarPorId(id));
     }
 
+
+    /**
+     * Verifica que guardar delegue en el repositorio y retorne el usuario guardado.
+     */
     @Test
     void guardar_delegaEnRepository() {
         Usuario input = new Usuario(null, "Juan", "juan@ejemplo.com", true);
@@ -55,6 +73,9 @@ class UsuarioServiceImplTest {
         verify(usuarioRepository).save(input);
     }
 
+    /**
+     * Cuando se actualiza un usuario existente, retorna el usuario con nuevos datos.
+     */
     @Test
     void actualizar_conIdExistente_devuelveActualizado() {
         Long id = 7L;
@@ -69,6 +90,9 @@ class UsuarioServiceImplTest {
         verify(usuarioRepository).save(actualizado);
     }
 
+    /**
+     * Verifica que eliminar no lance excepción al delegar en el repositorio.
+     */
     @Test
     void eliminar_noLanza() {
         doNothing().when(usuarioRepository).deleteById(2L);

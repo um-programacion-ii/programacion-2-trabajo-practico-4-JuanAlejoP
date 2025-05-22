@@ -20,6 +20,12 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias para la implementación de servicio de préstamos (PrestamoServiceImpl).
+ * <p>
+ * Asegura la lógica de negocio para búsqueda, guardado, actualización y eliminación de préstamos,
+ * incluyendo manejo de excepciones.
+ */
 @ExtendWith(MockitoExtension.class)
 class PrestamoServiceImplTest {
     private static final Logger log = LoggerFactory.getLogger(PrestamoServiceImplTest.class);
@@ -29,6 +35,9 @@ class PrestamoServiceImplTest {
     @InjectMocks
     private PrestamoServiceImpl prestamoService;
 
+    /**
+     * Cuando se busca un préstamo existente por ID, retorna el objeto préstamo.
+     */
     @Test
     void cuandoBuscaPorIdExiste_entoncesRetornaPrestamo() {
         Long id = 1L;
@@ -45,6 +54,9 @@ class PrestamoServiceImplTest {
         verify(prestamoRepository).findById(id);
     }
 
+    /**
+     * Cuando se busca un préstamo inexistente, lanza PrestamoNoEncontradoException.
+     */
     @Test
     void cuandoBuscarPorIdNoExiste_entoncesLanzaExcepcion() {
         Long id = 1L;
@@ -54,6 +66,9 @@ class PrestamoServiceImplTest {
                 () -> prestamoService.buscarPorId(id));
     }
 
+    /**
+     * Verifica que guardar delegue correctamente en el repositorio.
+     */
     @Test
     void guardar_delegaCorrectamente() {
         Prestamo input = new Prestamo(null, null, null, LocalDate.now(), null);
@@ -64,6 +79,10 @@ class PrestamoServiceImplTest {
         verify(prestamoRepository).save(input);
     }
 
+
+    /**
+     * Cuando se actualiza un préstamo con ID inexistente, lanza PrestamoNoEncontradoException.
+     */
     @Test
     void actualizar_conIdInexistente_lanzaExcepcion() {
         when(prestamoRepository.existsById(9L)).thenReturn(false);
@@ -71,6 +90,9 @@ class PrestamoServiceImplTest {
         () -> prestamoService.actualizar(9L, new Prestamo()));
     }
 
+    /**
+     * Verifica que eliminar delegue en el repositorio sin lanzar excepciones.
+     */
     @Test
     void eliminar_delegaYNoLanza() {
         doNothing().when(prestamoRepository).deleteById(4L);

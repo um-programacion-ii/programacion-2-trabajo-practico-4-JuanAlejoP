@@ -13,12 +13,20 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias para la implementación de repositorio de préstamos (PrestamoRepositoryImpl).
+ * <p>
+ * Verifica operaciones CRUD y consultas básicas de préstamos.
+ */
 class PrestamoRepositoryImplTest {
     private PrestamoRepositoryImpl repo;
     private Libro libro1;
     private Libro libro2;
     private Usuario usuario;
 
+    /**
+     * Inicializa un nuevo repositorio y datos de prueba antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         repo = new PrestamoRepositoryImpl();
@@ -27,6 +35,9 @@ class PrestamoRepositoryImplTest {
         usuario = new Usuario(null, "Juan", "juan@ejemplo.com", true);
     }
 
+    /**
+     * Verifica que al guardar un préstamo y luego buscarlo por ID, se obtengan los datos correctos.
+     */
     @Test
     void saveAndFindById() {
         LocalDate hoy = LocalDate.now();
@@ -40,6 +51,9 @@ class PrestamoRepositoryImplTest {
         assertEquals(hoy, encontrado.get().getFechaPrestamo());
     }
 
+    /**
+     * Verifica que findAll retorne todos los préstamos y deleteById elimine correctamente.
+     */
     @Test
     void findAllAndDelete() {
         LocalDate fecha = LocalDate.of(2025, 5, 1);
@@ -51,6 +65,9 @@ class PrestamoRepositoryImplTest {
         assertEquals(1, repo.findAll().size(), "Debería quedar un solo préstamo después de eliminar");
     }
 
+    /**
+     * Verifica que buscar por ID retorne el préstamo correcto o vacío si no existe.
+     */
     @Test
     void findById_encuentraYNoEncuentra() {
         Prestamo prestamo = repo.save(new Prestamo(null, libro1, usuario, LocalDate.now(), null));
@@ -61,6 +78,10 @@ class PrestamoRepositoryImplTest {
         assertFalse(repo.findById(777L).isPresent());
     }
 
+
+    /**
+     * Verifica que existsById funcione para préstamos existentes y no existentes.
+     */
     @Test
     void existsById_funcionaCorrecto() {
         Prestamo prestamo = repo.save(new Prestamo(null, libro2, usuario, LocalDate.now(), null));
