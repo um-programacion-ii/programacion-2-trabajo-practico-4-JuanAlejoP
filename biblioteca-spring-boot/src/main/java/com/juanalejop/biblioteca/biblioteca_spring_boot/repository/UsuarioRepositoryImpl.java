@@ -8,16 +8,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Implementación en memoria del {@link UsuarioRepository}.
+ * <p>
+ * Utiliza una lista interna y un contador atómico para asignar IDs.
+ */
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepository{
     private final List<Usuario> usuarios = new ArrayList<>();
     private final AtomicLong nextId = new AtomicLong(1);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Usuario> findAll() {
         return new ArrayList<>(usuarios);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Usuario> findById(Long id) {
         return usuarios.stream()
@@ -25,6 +36,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
                 .findFirst();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Usuario save(Usuario usuario) {
         if (usuario.getId() == null) {
@@ -36,11 +50,17 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
         return usuario;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteById(Long id) {
         usuarios.removeIf(u -> u.getId().equals(id));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean existsById(Long id) {
         return usuarios.stream()

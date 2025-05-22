@@ -7,19 +7,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementación de {@link PrestamoService} que interactúa con el repositorio de préstamos.
+ */
 @Service
 public class PrestamoServiceImpl implements PrestamoService{
     private final PrestamoRepository prestamoRepository;
 
+    /**
+     * Constructor con inyección de dependencias.
+     *
+     * @param prestamoRepository Repositorio JPA para operaciones CRUD de {@link Prestamo}.
+     */
     public PrestamoServiceImpl(PrestamoRepository prestamoRepository) {
         this.prestamoRepository = prestamoRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Prestamo> obtenerTodos() {
         return prestamoRepository.findAll();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Prestamo buscarPorId(Long id) {
         return prestamoRepository.findById(id)
@@ -27,11 +41,17 @@ public class PrestamoServiceImpl implements PrestamoService{
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Prestamo guardar(Prestamo prestamo) {
         return prestamoRepository.save(prestamo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Prestamo actualizar(Long id, Prestamo prestamo) {
         if (!prestamoRepository.existsById(id)) {
@@ -41,6 +61,9 @@ public class PrestamoServiceImpl implements PrestamoService{
         return prestamoRepository.save(prestamo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eliminar(Long id) {
         prestamoRepository.deleteById(id);
