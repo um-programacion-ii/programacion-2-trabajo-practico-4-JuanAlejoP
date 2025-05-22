@@ -16,6 +16,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias para la implementación de servicio de libros (LibroServiceImpl).
+ * <p>
+ * Evalúa lógica de negocio: búsqueda, guardado, actualización y eliminación de libros,
+ * manejando casos de éxito y excepciones.
+ */
 @ExtendWith(MockitoExtension.class)
 class LibroServiceImplTest {
     @Mock
@@ -24,6 +30,9 @@ class LibroServiceImplTest {
     @InjectMocks
     private LibroServiceImpl libroService;
 
+    /**
+     * Cuando se busca un libro existente por ISBN, retorna el objeto libro.
+     */
     @Test
     void cuandoBuscarPorIsbnExiste_entoncesRetornaLibro() {
         String isbn = "979-8888771389";
@@ -37,6 +46,10 @@ class LibroServiceImplTest {
         verify(libroRepository).findByIsbn(isbn);
     }
 
+
+    /**
+     * Cuando se busca un libro inexistente por ISBN, lanza LibroNoEncontradoException.
+     */
     @Test
     void cuandoBuscarPorIsbnNoExiste_entoncesLanzaExcepcion() {
         String isbn = "979-8888771389";
@@ -46,6 +59,9 @@ class LibroServiceImplTest {
                 () -> libroService.buscarPorIsbn(isbn));
     }
 
+    /**
+     * Verifica que guardar delegue en el repositorio y retorne el objeto guardado.
+     */
     @Test
     void guardar_delegaEnRepository() {
         Libro input = new Libro(null, "979-8888771389", "The Fragrant Flower Blooms with Dignity 1", "Saka Mikami", EstadoLibro.DISPONIBLE);
@@ -58,6 +74,9 @@ class LibroServiceImplTest {
         verify(libroRepository).save(input);
     }
 
+    /**
+     * Cuando se actualiza un libro con ID existente, retorna el libro con datos actualizados.
+     */
     @Test
     void actualizar_conIdExistente_retornaLibroActualizado() {
         Long id = 2L;
@@ -74,6 +93,9 @@ class LibroServiceImplTest {
         verify(libroRepository).save(updateData);
     }
 
+    /**
+     * Cuando se actualiza un libro con ID inexistente, lanza LibroNoEncontradoException.
+     */
     @Test
     void actualizar_conIdInexistente_lanzaExcepcion() {
         when(libroRepository.existsById(3L)).thenReturn(false);
@@ -83,6 +105,9 @@ class LibroServiceImplTest {
         verify(libroRepository).existsById(3L);
     }
 
+    /**
+     * Verifica que eliminar delegue en el repositorio y no lance excepciones.
+     */
     @Test
     void eliminar_delegaYNoLanza() {
         doNothing().when(libroRepository).deleteById(5L);

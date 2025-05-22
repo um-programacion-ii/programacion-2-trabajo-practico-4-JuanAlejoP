@@ -1,3 +1,8 @@
+/**
+ * Pruebas unitarias para el controlador de usuarios (UsuarioController).
+ * <p>
+ * Utiliza MockMvc para simular peticiones HTTP y Mockito para simular dependencias de servicio.
+ */
 package com.juanalejop.biblioteca.biblioteca_spring_boot.controller;
 
 import com.juanalejop.biblioteca.biblioteca_spring_boot.model.Usuario;
@@ -24,6 +29,10 @@ class UsuarioControllerTest {
     @MockitoBean
     private UsuarioService usuarioService;
 
+    /**
+     * Verifica que GET /api/usuarios retorne una lista vacía cuando no hay usuarios.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void getUsuarios_retornaListaVacia() throws Exception {
         when(usuarioService.obtenerTodos()).thenReturn(Collections.emptyList());
@@ -34,6 +43,11 @@ class UsuarioControllerTest {
                 .andExpect(content().json("[]"));
     }
 
+
+    /**
+     * Verifica que GET /api/usuarios/{id} retorne el usuario correspondiente.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void getUsuarioPorId_existe_retornaJson() throws Exception {
         when(usuarioService.buscarPorId(1L))
@@ -46,6 +60,10 @@ class UsuarioControllerTest {
         verify(usuarioService).buscarPorId(1L);
     }
 
+    /**
+     * Verifica que POST /api/usuarios cree un nuevo usuario y retorne el JSON con los datos.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void postCrearUsuario_retornaOkYJson() throws Exception {
         Usuario out = new Usuario(10L, "Jose", "jose@ejemplo.com", false);
@@ -60,6 +78,10 @@ class UsuarioControllerTest {
         verify(usuarioService).guardar(any());
     }
 
+    /**
+     * Verifica que DELETE /api/usuarios/{id} elimine un usuario existente.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void deleteUsuario_retornaNoContent() throws Exception {
         doNothing().when(usuarioService).eliminar(2L);

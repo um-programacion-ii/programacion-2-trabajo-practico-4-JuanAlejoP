@@ -1,3 +1,8 @@
+/**
+ * Pruebas unitarias para el controlador de libros (LibroController).
+ * <p>
+ * Utiliza MockMvc para simular peticiones HTTP y Mockito para simular dependencias de servicio.
+ */
 package com.juanalejop.biblioteca.biblioteca_spring_boot.controller;
 
 import com.juanalejop.biblioteca.biblioteca_spring_boot.model.EstadoLibro;
@@ -26,6 +31,10 @@ class LibroControllerTest {
     @MockitoBean
     private LibroService libroService;
 
+    /**
+     * Verifica que GET /api/libros retorne una lista vacía cuando no hay libros.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void getLibros_retornaListaVacia() throws Exception {
         when(libroService.obtenerTodos()).thenReturn(Collections.emptyList());
@@ -36,6 +45,10 @@ class LibroControllerTest {
                 .andExpect(content().json("[]"));
     }
 
+    /**
+     * Verifica que GET /api/libros/{isbn} retorne el libro correspondiente en formato JSON.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void getLibroPorId_existe_retornaJson() throws Exception {
         when(libroService.buscarPorIsbn("1"))
@@ -48,6 +61,10 @@ class LibroControllerTest {
         verify(libroService).buscarPorIsbn("1");
     }
 
+    /**
+     * Verifica que POST /api/libros cree un nuevo libro y retorne el JSON con los datos.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void postCrearLibro_retornaOkYJson() throws Exception {
         Libro output = new Libro(5L, "979-8888771426", "The Fragrant Flower Blooms with Dignity 5", "Saka Mikami", EstadoLibro.DISPONIBLE);
@@ -62,6 +79,10 @@ class LibroControllerTest {
         verify(libroService).guardar(any());
     }
 
+    /**
+     * Verifica que PUT /api/libros/{id} actualice un libro existente.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void putActualizarLibro_retornaJsonActualizado() throws Exception {
         Libro actualizado = new Libro(2L, "979-8888771396", "The Fragrant Flower Blooms with Dignity 2", "Saka Mikami", EstadoLibro.PRESTADO);
@@ -76,6 +97,10 @@ class LibroControllerTest {
         verify(libroService).actualizar(eq(2L), any());
     }
 
+    /**
+     * Verifica que DELETE /api/libros/{id} elimine el libro y retorne status OK.
+     * @throws Exception en caso de error de petición.
+     */
     @Test
     void deleteLibro_retornaNoContent() throws Exception {
         doNothing().when(libroService).eliminar(3L);
